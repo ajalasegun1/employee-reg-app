@@ -18,7 +18,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import * as employeeService from "../../services/employeeServices"
+import * as employeeService from "../../services/employeeServices";
 import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -77,7 +77,7 @@ function EmployeeForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) employeeService.insertEmployee(values);
-    reset()
+    reset();
   };
 
   //[{"id":1,"fullname":"Granit Xhaka","email":"granit@xhaka.com","mobile":"0987654321","city":"Swiss","gender":"male","departmentId":"Development","hireDate":"2021-04-01T18:23:00.000Z","isPermanent":true}]

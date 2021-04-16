@@ -20,3 +20,11 @@ export const getAllEmployees = () => {
     localStorage.setItem(KEYS.employees, JSON.stringify([]));
   return JSON.parse(localStorage.getItem(KEYS.employees));
 };
+
+export const tableHeadCells = [
+  { id: "fullname", label: "Full Name" },
+  { id: "email", label: "Email" },
+  { id: "mobile", label: "Mobile" },
+  { id: "department", label: "Department", disableSorting: true },
+];
+
