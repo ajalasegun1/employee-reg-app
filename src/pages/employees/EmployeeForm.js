@@ -19,7 +19,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import * as employeeService from "../../services/employeeServices";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,10 +47,24 @@ const initialValues = {
   isPermanent: false,
 };
 
-function EmployeeForm() {
+function EmployeeForm({
+  onCloseClick,
+  setRecords,
+  recordForEdit,
+  setRecordForEdit,
+  setNotify,
+}) {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const classes = useStyles();
+  useEffect(() => {
+    if (recordForEdit !== null) {
+      setValues({
+        ...recordForEdit,
+      });
+    }
+  }, [recordForEdit]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -76,11 +90,32 @@ function EmployeeForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validate()) employeeService.insertEmployee(values);
-    reset();
+    if (values.id === 0) {
+      if (validate()) {
+        employeeService.insertEmployee(values);
+        setRecords(employeeService.getAllEmployees());
+        setNotify({
+          isOpen: true,
+          message: "Submitted successfully",
+          type: "success",
+        });
+        reset();
+        onCloseClick();
+      }
+    }
+    if (validate()) {
+      employeeService.updateEmployee(values);
+      setRecords(employeeService.getAllEmployees());
+      setNotify({
+        isOpen: true,
+        message: "Submitted successfully",
+        type: "success",
+      });
+      reset();
+      setRecordForEdit(null);
+      onCloseClick();
+    }
   };
-
-  //[{"id":1,"fullname":"Granit Xhaka","email":"granit@xhaka.com","mobile":"0987654321","city":"Swiss","gender":"male","departmentId":"Development","hireDate":"2021-04-01T18:23:00.000Z","isPermanent":true}]
 
   const reset = () => {
     setValues(initialValues);

@@ -8,6 +8,20 @@ export const insertEmployee = (data) => {
   employees.push(data);
   localStorage.setItem(KEYS.employees, JSON.stringify(employees));
 };
+
+export const updateEmployee = (data) => {
+  let employees = getAllEmployees();
+  let recordIndex = employees.findIndex((x) => x.id === data.id);
+  employees[recordIndex] = { ...data };
+  localStorage.setItem(KEYS.employees, JSON.stringify(employees));
+};
+
+export const deleteEmployee = (id) => {
+  let employees = getAllEmployees();
+  employees = employees.filter((employee) => employee.id !== id);
+  localStorage.setItem(KEYS.employees, JSON.stringify(employees));
+};
+
 export const generateEmployeeID = () => {
   if (localStorage.getItem(KEYS.employeeID) === null)
     localStorage.setItem(KEYS.employeeID, "0");
@@ -26,5 +40,5 @@ export const tableHeadCells = [
   { id: "email", label: "Email" },
   { id: "mobile", label: "Mobile" },
   { id: "department", label: "Department", disableSorting: true },
+  { id: "actions", label: "Actions", disableSorting: true },
 ];
-
